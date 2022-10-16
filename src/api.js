@@ -1,3 +1,5 @@
+import { capitalize } from './util.js';
+
 const BACKEND_URL = 'https://bsale-backend.onrender.com/api';
 
 export const getProducts = async ({
@@ -18,4 +20,20 @@ export const getProducts = async ({
   // console.log(products);
 
   return products;
+}
+
+export const getCategories = async () => {
+  const response = await fetch(`${BACKEND_URL}/categories`);
+  const categories = await response.json();
+
+  categories.forEach((category) => {
+    category.value = category.name;
+    category.label = capitalize(category.name);
+
+    delete category.name;
+  });
+
+  categories.unshift({ label: 'Todas', value: '' });
+
+  return categories;
 }
