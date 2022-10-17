@@ -2,32 +2,39 @@ import { getProductsData, getCategories } from "./api/index.js";
 
 import Product from "./components/Product.js";
 import Dropdown from "./components/Dropdown.js";
-import Pagination from "./components/Pagination.js";
 
 const productsContainer = document.querySelector("#products");
 const searchForm = document.querySelector("#searchForm");
 const categoriesDropdown = document.querySelector("#categories");
 const itemsNumberDropdown = document.querySelector("#itemsNumber");
 const totalProducts = document.querySelector("#totalProducts");
-const paginationContainer = document.querySelector("#paginationContainer");
+const prevButton = document.querySelector("#prevButton");
+const nextButton = document.querySelector("#nextButton");
 
 let filter = {};
-let actualPage = 0;
-let pagesCount = 0;
 
 async function fetchProducts() {
   const { products, totalItems, totalPages, currentPage } = await getProductsData(filter);
   productsContainer.innerHTML = products.map(Product).join("");
   totalProducts.innerHTML = `Mostrando ${filter.limit || 10} de ${totalItems} productos`;
-  console.log(totalPages, currentPage);
-  actualPage = currentPage;
-  pagesCount = totalPages;
+  filter.page = currentPage;
+
+  if (currentPage + 1 === 1) {
+    prevButton.classList.add("disabled");
+  } else {
+    prevButton.classList.remove("disabled");
+  }
+
+  if (currentPage + 1 === totalPages) {
+    nextButton.classList.add("disabled");
+  } else {
+    nextButton.classList.remove("disabled");
+  }
 };
 
 
 async function fetchCategories() {
   const categories = await getCategories();
-  console.log(categories)
   categoriesDropdown.innerHTML = Dropdown(categories, "category");
 }
 
@@ -43,9 +50,6 @@ itemsNumberDropdown.innerHTML = Dropdown(itemsNumberArray, "limit");
 const App = async () => {
   await fetchProducts();
   await fetchCategories();
-
-  paginationContainer.innerHTML = Pagination(pagesCount, actualPage + 1);
-
 
   searchForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -73,24 +77,14 @@ const App = async () => {
     }
   });
 
-  const paginationItemsContainer = document.querySelector(".pagination");
-  console.log(paginationItemsContainer);
-  const paginationItems = paginationItemsContainer.querySelectorAll(".page-item");
-  console.log(paginationItems);
+  prevButton.addEventListener("click", async () => {
+    filter.page--;
+    await fetchProducts();
+  });
 
-  paginationItems.forEach((item) => {
-    +item.children[0].dataset.page === actualPage + 1 ? item.children[0].classList.add("active") : item.children[0].classList.remove("active");
-
-    // console.log(+item.children[0].dataset.page === actualPage + 1)
-    item.addEventListener("click", async (e) => {
-      console.log(e.target)
-      console.log(paginationItems);
-
-      if (e.target.classList.contains("page-link")) {
-        filter.page = e.target.dataset.page - 1;
-        await fetchProducts();
-      }
-    });
+  nextButton.addEventListener("click", async () => {
+    filter.page++;
+    await fetchProducts();
   });
 }
 
