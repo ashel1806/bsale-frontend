@@ -2,6 +2,8 @@
  *
  * @param {DropdownItem} item The item to be added to the dropdown
  * @param {string} dataset The dataset to be used for the dropdown item.
+ *
+ * @returns {string} The HTML string for the dropdown item.
  */
 const DropdownItem = (item, dataset) => {
   return `
@@ -15,6 +17,8 @@ const DropdownItem = (item, dataset) => {
  * @param {string} title The title of the dropdown
  * @param {DropdownItem[]} items Items to be displayed in the dropdown.
  * @param {string} dataset The dataset to be used for the dropdown items.
+ *
+ * @returns {string} The HTML string for the dropdown.
  */
 const Dropdown = (items, dataset) => {
   return `

@@ -1,3 +1,8 @@
+/**
+ * @param {Product} product - The product to be added to the card.
+ * @returns {string} - The HTML string for the product card.
+ */
+
 const Product = (product) => {
   if (!product.url_image) {
     product.url_image =
@@ -29,3 +34,17 @@ const Product = (product) => {
 };
 
 export default Product;
+
+/**
+ * @typedef {Object} Category
+ * @property {string} name
+ */
+
+/**
+ * @typedef {Object} Product
+ * @property {string} name
+ * @property {string} url_image
+ * @property {number} price
+ * @property {number} discount
+ * @property {Category} type
+ */

@@ -1,6 +1,11 @@
 import BACKEND_URL from '../config.js';
 import { capitalize } from '../util.js';
 
+/**
+ * Function to get the categories from the API
+ *
+ * @returns {Promise<Category[]>} Promise with array of categories
+ */
 export const getCategories = async () => {
   const response = await fetch(`${BACKEND_URL}/categories`);
   const categories = await response.json();
@@ -16,3 +21,9 @@ export const getCategories = async () => {
 
   return categories;
 }
+
+/**
+ * @typedef {Object} Category
+ * @property {string} label
+ * @property {string} value
+ */
