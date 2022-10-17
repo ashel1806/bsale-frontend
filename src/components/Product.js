@@ -9,16 +9,22 @@ const Product = (product) => {
     : product.price;
 
   return `
-    <div class="col">
-      <div class="card">
-        <img src=${product.url_image} class="card-img-top" alt=${product.name}>
-        <div class="card-body">
-          <h5 class="card-title">${product.name}</h5>
-          <p class="card-text ${product.discount ? 'text-decoration-line-through' : 'd-none'}">${product.price}</p>
-          <p class="card-text">${finalPrice}</p>
+  <div class="col">
+    <div class="card h-100">
+      <img src=${product.url_image} class="card-img-top product-image" alt=${product.name} />
+      <div class="card-body">
+        <span class="badge rounded-pill text-bg-info text-capitalize mb-3">${product.type.name}</span>
+        <h5 class="mb-0 text-capitalize">${product.name}</h5>
+
+        <div class="d-flex my-3">
+          <p class="small me-2 ${product.discount ? 'text-danger' : 'd-none'}">
+            <s>$ ${product.price}</s>
+          </p>
+          <h5 class="text-dark mb-0 fw-light">$ ${finalPrice}</h5>
         </div>
       </div>
     </div>
+  </div>
   `;
 };
 

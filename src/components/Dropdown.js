@@ -16,11 +16,11 @@ const DropdownItem = (item, dataset) => {
  * @param {DropdownItem[]} items Items to be displayed in the dropdown.
  * @param {string} dataset The dataset to be used for the dropdown items.
  */
-const Dropdown = (title, items, dataset) => {
+const Dropdown = (items, dataset) => {
   return `
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        ${title}
+        ${items[0].label}
       </button>
       <ul class="dropdown-menu">
         ${items.map((item) => DropdownItem(item, dataset)).join("")}

@@ -18,7 +18,7 @@ let pagesCount = 0;
 async function fetchProducts() {
   const { products, totalItems, totalPages, currentPage } = await getProductsData(filter);
   productsContainer.innerHTML = products.map(Product).join("");
-  totalProducts.innerHTML = totalItems;
+  totalProducts.innerHTML = `Mostrando ${filter.limit || 10} de ${totalItems} productos`;
   console.log(totalPages, currentPage);
   actualPage = currentPage;
   pagesCount = totalPages;
@@ -27,7 +27,8 @@ async function fetchProducts() {
 
 async function fetchCategories() {
   const categories = await getCategories();
-  categoriesDropdown.innerHTML = Dropdown("Categorias", categories, "category");
+  console.log(categories)
+  categoriesDropdown.innerHTML = Dropdown(categories, "category");
 }
 
 const itemsNumberArray = [
@@ -37,7 +38,7 @@ const itemsNumberArray = [
   { label: "25", value: 25 },
 ]
 
-itemsNumberDropdown.innerHTML = Dropdown("Items por página", itemsNumberArray, "limit");
+itemsNumberDropdown.innerHTML = Dropdown(itemsNumberArray, "limit");
 
 const App = async () => {
   await fetchProducts();
@@ -55,6 +56,9 @@ const App = async () => {
   categoriesDropdown.addEventListener("click", async (e) => {
     if (e.target.classList.contains("dropdown-item")) {
       filter.category = e.target.dataset.category;
+      const itemParent = e.target.parentElement;
+      const button = itemParent.parentElement.children[0];
+      button.textContent = e.target.textContent;
       fetchProducts();
     }
   });
@@ -62,6 +66,9 @@ const App = async () => {
   itemsNumberDropdown.addEventListener("click", async (e) => {
     if (e.target.classList.contains("dropdown-item")) {
       filter.limit = e.target.dataset.limit;
+      const itemParent = e.target.parentElement;
+      const button = itemParent.parentElement.children[0];
+      button.textContent = e.target.textContent;
       fetchProducts();
     }
   });
